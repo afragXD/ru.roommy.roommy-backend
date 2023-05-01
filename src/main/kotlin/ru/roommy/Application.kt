@@ -3,6 +3,7 @@ package ru.roommy
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.cio.*
+import io.ktor.server.netty.*
 import org.jetbrains.exposed.sql.Database
 import ru.roommy.features.login.configureLoginRouting
 import ru.roommy.features.register.configureRegisterRouting
@@ -14,8 +15,12 @@ fun main() {
         user = "postgres", password = "742617"
     )
 
-    embeddedServer(CIO, port = 8080, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
+    embeddedServer(Netty, port = System.getenv("PORT").toInt()){
+        configureRouting()
+        configureLoginRouting()
+        configureRegisterRouting()
+        configureSerialization()
+    }.start(wait = true)
 }
 
 fun Application.module() {
