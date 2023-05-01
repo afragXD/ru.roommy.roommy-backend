@@ -12,7 +12,6 @@ import java.util.*
 class LoginController(private val call: ApplicationCall) {
     suspend fun performLogin(){
 
-
         val receive = call.receive<LoginReceiveRemote>()
         val userDTO = Users.fetchUser(receive.email)
 
